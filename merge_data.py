@@ -43,7 +43,7 @@ for my_dir in all_dirs:
     for sample in ds:
         gathered_data.append(sample)
 
-random.shuffle(gathered_data)
+#random.shuffle(gathered_data)
 
 print("I collect ", len(gathered_data), "samples")
 
@@ -51,3 +51,15 @@ with open(script_args.output_dir, "w", encoding="utf8") as f:
     for i in range(len(gathered_data)):
         json.dump(gathered_data[i], f, ensure_ascii=False)
         f.write('\n')
+
+
+from datasets import load_dataset, Dataset, DatasetDict
+
+keys = all_data[0].keys()  
+
+dict_data = {key: [d[key] for d in all_data] for key in keys}
+output_dir = script_args.output_dir
+
+dataset = Dataset.from_dict(dict_data)
+#DatasetDict({'train': dataset}).push_to_hub('mytestdpo/' + script_args.output_dir)
+
