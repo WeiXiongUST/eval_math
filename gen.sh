@@ -4,7 +4,7 @@ model="Qwen/Qwen2.5-Math-7B"
 output_dir="./eval_result/gen"
 DATA_NAME="math500,minerva_math,olympiadbench,aime24,amc23"
 #minerva_math
-mkdir $base_path
+mkdir eval_result
 num_of_responses=16
 my_world_size=8
 NUM_GPUS=$my_world_size
@@ -24,7 +24,7 @@ done
 wait # Ensure all inference processes finish
 
 # Merge the generated data
-python ./generation/merge_data.py --base_path ${output_dir} --output_dir "${output_dir}_merged_data.jsonl" --num_datasets ${my_world_size}
+python ./merge_data.py --base_path ${output_dir} --output_dir "${output_dir}_merged_data.jsonl" --num_datasets ${my_world_size}
 
 # Perform reward labeling
 #python reward_labeling.py --dataset_name_or_path "${output_dir}_merged_data.jsonl" --output_dir "${output_dir}_merged_data_with_rewards.jsonl"
